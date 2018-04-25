@@ -5,6 +5,7 @@ import org.scalatest.{FunSuite, Matchers}
 class ValsAndVarsSpec extends FunSuite with Matchers {
   test("Case 1: Vals are like final") {
     val a = 10
+    a should be (10)
   }
 
   test("Case 2: No reassignment of val is possible") {
