@@ -84,8 +84,6 @@ class CollectionsSpec extends FunSuite with Matchers {
       |  Use getClass.getSimpleName to verify, also use reverse to try a
       |  method that is unavailable in Java""".stripMargin) {
     
-        
-      
   }
 
   test("""Case 10: Whereas a List is a LIFO, a Queue is a FIFO just like a
