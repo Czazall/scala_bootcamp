@@ -5,9 +5,10 @@ import org.scalatest.{FunSuite, Matchers}
 class ValsAndVarsSpec extends FunSuite with Matchers {
   test("Case 1: Vals are like final") {
     val a = 10
+    a should be (10)
   }
 
-  test("Case 2: No reassignment of val is possible") {
+  test("Case 2: No reassignment of val is possible, we prefer vals") {
     val a = 10
     //a = 40 //Will not compile
   }
@@ -18,13 +19,16 @@ class ValsAndVarsSpec extends FunSuite with Matchers {
     a should be (19)
   }
 
-  test("Case 4: A lazy val is a val that will not be evaluated, run this in REPL for understanding") {
+  test("""Case 4: A lazy val is a val that will not be evaluated,
+      |  run this in REPL for understanding""".stripMargin) {
     lazy val a = {println("evaluated"); 5}
     println(a)
   }
 
   test("Case 5: lazy val forward reference") {
-    pending
+    lazy val a:Int = 10 + b
+    lazy val b:Int = 15
+    a should be (25)
   }
 
   test("Case 6: Exceptions in lazy val") {
