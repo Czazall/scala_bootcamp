@@ -262,15 +262,14 @@ class FunctionsSpec extends FunSuite with Matchers {
       | Three Hundred, 200 -> Two Hundred, 100 -> One Hundred)""".stripMargin) {
 
     val origMap = Map(1 -> "One",
-      2 -> "Two",
-      3 -> "Three")
+                      2 -> "Two",
+                      3 -> "Three")
 
-    //val result:Map[Int, String] = ???
+    val result:Map[Int, String] = origMap.flatMap(t => 
+        Map (t._1 -> t._2, (t._1 * 100)->(t._2 + " Hundred")))
 
-    //result should be (Map(1 -> "One", 2 -> "Two", 3 -> "Three",
-    //  300 -> "Three Hundred", 200 -> "Two Hundred", 100 -> "One Hundred"))
-
-    pending
+    result should be (Map(1 -> "One", 2 -> "Two", 3 -> "Three",
+      300 -> "Three Hundred", 200 -> "Two Hundred", 100 -> "One Hundred"))
   }
 
   test("""Case 21: Option and flatMap""") {
