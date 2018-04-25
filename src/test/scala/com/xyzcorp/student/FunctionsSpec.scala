@@ -170,6 +170,10 @@ class FunctionsSpec extends FunSuite with Matchers {
     val vector = Vector(1, 3, 4, 6)
     val result = vector.map(x => x * 4)
     result should be(List(4, 12, 16, 24)) //4
+
+
+    // List ('c', 'd', 'e').map (c => (c+1).toChar)  // Yields List('d','e','f')
+    // List (1,2,3).map(x=>x+1) // Yields List(2,3,4)
   }
 
   test("""Case 12: Map can be applied to a Stream, it is just another collection""") {
@@ -201,14 +205,17 @@ class FunctionsSpec extends FunSuite with Matchers {
       |  will contain a seed and then a function that will
       |  aggregate the collection into one.""".stripMargin) {
 
-    pending
+       val result = List(1,2,3,4,5).foldLeft(0)((total: Int, next:Int) => total + next)
+
+      result should be (15)
   }
 
   test("""Case 16: reduce will collapse all elements of a collection using a function.
       |  It will start the first element as the 'seed' or 'accumulation"""
       .stripMargin) {
 
-    pending
+    val result = Vector(4,5,6).reduce(_+_)
+    result should be (15)
   }
 
   test("""Case 17: flatMap will not only apply the given function on all
