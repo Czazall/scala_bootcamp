@@ -304,11 +304,21 @@ class FunctionsSpec extends FunSuite with Matchers {
   test("""Case 24: groupBy will categorize a collection by a function, and return a
       |  map where the keys were derived by that function""".stripMargin) {
     val lyrics = List(
-      "I see trees of green", "Red roses too",
+      "I see trees of green", 
+      "Red roses too",
       "I see them bloom",
-      "for me and you")
+      "for me and you"
+      ,"An I think to myself"
+      ,"What a wonderful world")
 
-    pending
+      lyrics.flatMap(p => p.split(" ")).map(_.toLowerCase).groupBy(s=>s.head)
+
+      lyrics.flatMap(p => p.split(" ")).map(_.toLowerCase).groupBy(identity)
+
+      lyrics.flatMap(p => p.split(" ")).map(_.toLowerCase).groupBy(identity).mapValues(_.size)
+
+
+    
   }
 
   test("""Case 25: mkString will create a string from a
