@@ -222,7 +222,7 @@ class FunctionsSpec extends FunSuite with Matchers {
       |  elements of a Traversable,
       |  but all elements within the elements
       |  and flatten the results""".stripMargin) {
-    pending
+    List(1,2,3).flatMap(x=> List(-x,x,x+1))
   }
 
   test("""Case 18: Lab: A flatMap will take a function that returns
