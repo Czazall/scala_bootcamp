@@ -6,7 +6,7 @@ class ControlStatementsSpec extends FunSuite with Matchers {
   test("""Case 1: if, else if, else done in an imperative fashion. Note
       | the var, which we don't usually like""".stripMargin) {
 
-    val a = 10
+    val a = 11
     var result = "" // var is usually a code smell
     if (a < 10) {
       result = "Less than 10"
@@ -15,11 +15,21 @@ class ControlStatementsSpec extends FunSuite with Matchers {
     } else {
       result = "It is 10!"
     }
-    result should be("It is 10!")
+    result should be("Greater than 10")
   }
 
   test("Case 2: if, else if, else functional. Notice that this uses all vals") {
-     pending
+    val a = 11
+    val result = 
+                if (a < 10) {
+                  "Less than 10"
+                } else if (a > 10) {
+                  "Greater than 10"
+                } else {
+                  "It is 10!"
+                }
+
+    result should be("Greater than 10")
   }
 
   test("""Case 3: while loop, underused, but still used by API developers,
@@ -37,7 +47,7 @@ class ControlStatementsSpec extends FunSuite with Matchers {
   test("""Case 4: The following is the same as the while loop, but functional
       | programming makes things easier. A few of these are things we have
       | not covered yet. Just to give you a flavor""".stripMargin) {
-    (10 to 1 by -1).mkString(",") should be("10,9,8,7,6,5,4,3,2,1")
+    (10 to -1 by -2).mkString(",") should be("10,8,6,4,2,0")
   }
 
   test("Case 5: do while loop, underused, still used by API Developers") {
@@ -66,6 +76,7 @@ class ControlStatementsSpec extends FunSuite with Matchers {
   }
 
   test("Case 7: Create a simple for comprehension") {
-    pending
+   val z = for (a <- 1 to 10) yield a + 1 
+   z should contain inOrder (2,3,4,5,6,7,8,9,10,11)
   }
 }

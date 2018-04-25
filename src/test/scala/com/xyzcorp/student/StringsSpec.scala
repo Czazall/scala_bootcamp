@@ -75,9 +75,8 @@ class StringsSpec extends FunSuite with Matchers {
 
   test("Lab: String Interpolation") {
      val a = 99
-     //val result:String = ???
-     //result should be (s"$a luftballoons floating in the summer sky")
-     pending
+     val result:String = s"${a+1} luftballoons floating in the summer sky"
+     result should be ("100 luftballoons floating in the summer sky")
   }
 
   test("""Lab: String Interpolation with the f interpolator.
@@ -87,9 +86,10 @@ class StringsSpec extends FunSuite with Matchers {
       |  """.stripMargin) {
     val ticketsCost = 50
     val bandName = "Psychedelic Furs"
-    //val result:String = ???
-    //result should be ("The Psychedelic Furs tickets are probably $50.00")
-    pending
+
+    val result:String = f"The $bandName%s tickets are probably $$$ticketsCost%.2f"
+    result should be ("The Psychedelic Furs tickets are probably $50.00")
+    
   }
 
   test("""Lab: Formatting and Interpolating, turn the following in a the
@@ -106,9 +106,9 @@ class StringsSpec extends FunSuite with Matchers {
     val percentIncrease = 20
     val musicGenre = "New Wave"
 
-    //val result:String = ???
-    //result should be ("The Psychedelic Furs tickets are probably $50.00\nThat's a 20% bump because everyone likes New Wave")
 
-    pending
+    val result:String = f"""The $bandName%s tickets are probably $$$ticketsCost%.2f
+                        |That's a $percentIncrease%%%% bump because everyone likes %%s""".stripMargin.format(musicGenre)
+    result should be ("The Psychedelic Furs tickets are probably $50.00\nThat's a 20% bump because everyone likes New Wave")
   }
 }

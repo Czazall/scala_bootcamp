@@ -8,22 +8,55 @@ class FunctionsSpec extends FunSuite with Matchers {
   test("""Case 1: A function really is an anonymous
       |  instantiation of a trait.""".stripMargin) {
 
-    pending
+    val f = new Function1[String, Int]
+    {
+      def apply(v1:String): Int = v1.length
+    }
+
+    f("Mike Is Cool") should be (12)
+    f("M") should be (1)
   }
 
   test("Case 2:The above can be whittled down to x => f(x):") {
-    pending
+    val f = (s:String) => s.length
+    
+    f("Mike Is Cool") should be (12)
+    f("M") should be (1)
+  
   }
 
   test("""Case 3: If you declare the left hand side you
       | don't need to declare the right:""".stripMargin) {
-    pending
+
+       val f:Function1[String, Int] = s => s.length
+       
+       f("Mike Is Cool") should be (12)
+       f("M") should be (1)
   }
 
   test("""Case 4: Also, since the left hand side, has all the type information,
       |  on the right hand side you can trim the left hand side
       |  with syntactical tricks like use the placeholder""".stripMargin) {
-    pending
+    
+       val f:Function1[String, Int] = _.length
+       val f2:String => Int = _.length
+       
+       f("Mike Is Cool") should be (12)
+       f("M") should be (1)
+
+        f2("Mike Is Cool") should be (12)
+       f2("M") should be (1)
+  }
+
+  test("""Case 4.1 Function2 with placeholder""") {
+
+    val f2_1:Function2[Int,Int,Int] = (x,y) => x+y
+    val f2_2:(Int,Int) => Int = (x,y) => x + y
+    val f2_3:(Int,Int) => Int = _ + _   // if one is used more than once or position is important this won't work
+    
+    f2_1(40,50) should be (90)
+    f2_2(40,50) should be (90)
+    f2_3(40,50) should be (90)
   }
 
   test("""Case 5: If the type system has enough information either because
@@ -33,7 +66,19 @@ class FunctionsSpec extends FunSuite with Matchers {
       |  can drop the underline and leave 5+, but will come with some warnings
       |  that you can turn off with """.stripMargin) {
 
-    pending
+    val stLenght: String => Int = _.length
+
+    stLenght("Mike") should be (4)
+    
+    //val stLenght_2: String => Int = _.length
+
+    //stLenght_2("Mike") should be (4)
+
+    import scala.language.postfixOps
+    {
+    val add3: Int => Int = 3+
+    //add3(5) should be (8)
+    }
   }
 
   test("""Case 6: A closure is a function that will "wrap" or "close"
@@ -51,13 +96,26 @@ class FunctionsSpec extends FunSuite with Matchers {
             after those seconds.""") {
 
 
+    object MyFunctions {
+      def lessThan(x:Int):Int => Boolean = {
+        (y:Int) =>  y < x
+      }
+    }
 
-    //val isFreezingCelcius = MyFunctions.lessThan(0)
-    //val isFreezingFahrenheit = MyFunctions.lessThan(32)
-    //isFreezingFahrenheit.apply(25) should be (true)
-    //isFreezingCelcius.apply(25) should be (false)
+    val isFreezingCelcius = MyFunctions.lessThan(0)
+    val isFreezingFahrenheit = MyFunctions.lessThan(32)
+    isFreezingFahrenheit.apply(25) should be (true)
+    isFreezingCelcius.apply(25) should be (false)
 
-    pending
+    object MyFunctions1 {
+      def lessThan(x:Int):Int => Boolean = _ < x
+    }
+
+    val isFreezingCelcius_1 = MyFunctions1.lessThan(0)
+    val isFreezingFahrenheit_1 = MyFunctions1.lessThan(32)
+    isFreezingFahrenheit_1(25) should be (true)
+    isFreezingCelcius_1(25) should be (false)
+
   }
 
   test("""Case 8: Closure have some particular implications. One such implication

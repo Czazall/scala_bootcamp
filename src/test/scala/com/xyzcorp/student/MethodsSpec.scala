@@ -25,8 +25,54 @@ class MethodsSpec extends FunSuite with Matchers {
 
   test("""Case 4: Recursion is supported just like another language,
       |  we can do a factorial using recursion""".stripMargin) {
-    pending
+        def factorial(n:Int):Int = 
+        {
+            require(n >= 0)
+            if (n == 0) return 1;
+            else
+            {
+              return n * factorial(n-1);
+            }
+        }
+
+        factorial(1) should be (1)
+        factorial(3) should be (6)
+        factorial(4) should be (24) 
+        factorial(0) should be (1)
+
+        a [IllegalArgumentException] should be thrownBy {
+          factorial(-1)
+        }
   }
+
+ test("""Case 4.5: Recursion is supported just like another language,
+      |  we can do a factorial using recursion""".stripMargin) {
+        def factorial(n:Int):Int = 
+        {
+          require(n >= 0)
+          def fact(i:Int, acc:Int):Int =
+          {
+            if (i == 0) acc
+            else
+            {
+              fact (i - 1, i * acc )
+            }
+          }
+          fact(n, 1)
+        }
+
+        factorial(1) should be (1)
+        factorial(2) should be (2)
+        factorial(3) should be (6)
+        factorial(4) should be (24) 
+        factorial(0) should be (1)
+
+        a [IllegalArgumentException] should be thrownBy {
+          factorial(-1)
+        }
+      
+  }
+
 
   test("""Case 5: Multi-parameter lists are groups or argument lists,
       |  the purpose are two fold: The get group like terms, and
@@ -62,7 +108,17 @@ class MethodsSpec extends FunSuite with Matchers {
   }
 
   test("Case 8: Generics with methods: Convert the following with generics") {
+    def decide[A](b:Boolean, x:A, y:A):A = if (b) x else y
+
+    decide(false, 1 , 5) should be (5)
+    decide(true, 1 , 5) should be (1)
+  }
+
+  test("Case 8.1: Generics with methods: Convert the following with generics") {
     def decide(b:Boolean, x:Any, y:Any):Any = if (b) x else y
+
+        decide(false, 1 , 5) should be (5)
+        decide(true, 1 , 5) should be (1)
   }
 
   test("""Case 9: Default methods have just methods that have a value
@@ -72,6 +128,12 @@ class MethodsSpec extends FunSuite with Matchers {
       |  explicitly by the name to avoid any confusion as to what you
       |  are setting""".stripMargin) {
 
-    pending
+    class Employee (val firstName:String,
+                val middleName:Option[String] = None,
+                val lastName:String)
+
+    val KC = new Employee ("K.C.", None, "Morgan")
+
+    KC.firstName should be ("K.C.")    
   }
 }

@@ -59,7 +59,12 @@ class CollectionsSpec extends FunSuite with Matchers {
       |  The construction can
       |  be done using recursion. Here we will
       |  make some continous evens""".stripMargin) {
-    pending
+    
+      def continuousEvens(n:Int):Stream[Int] = {
+        Stream.cons(n, continuousEvens(n+2))
+      }
+
+      continuousEvens(4).take(5).mkString(",") should be ("4,6,8,10,12")
   }
 
   test(
@@ -68,11 +73,19 @@ class CollectionsSpec extends FunSuite with Matchers {
     pending
   }
 
+  test(
+    """Case 8.1: Stream Factorials""") {
+      pending
+      //def recurseFact(n:Int):Stream[Int] =  n #:: (n * recurseFact( (n - 1) )
+    }
+
   test("""Case 9: An array is a java based array with a Scala wrapper
       |  around it to perform the functionality.
       |  Use getClass.getSimpleName to verify, also use reverse to try a
       |  method that is unavailable in Java""".stripMargin) {
-    pending
+    
+        
+      
   }
 
   test("""Case 10: Whereas a List is a LIFO, a Queue is a FIFO just like a

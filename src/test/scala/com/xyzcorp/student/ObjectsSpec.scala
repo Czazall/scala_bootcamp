@@ -16,6 +16,23 @@ class ObjectsSpec extends FunSuite with Matchers {
     test("""Case 3: Use Object to create a 'static-like' method factory for the following Employee class""") {
       class Employee private (val firstName:String, val middleName:Option[String], val lastName:String)
 
-      pending
+      object Employee {
+          def apply(firstName:String
+                    ,middleName:String
+                    ,lastName:String):Employee = new Employee (firstName
+                                                               ,Some(middleName)
+                                                               ,lastName)
+          
+          def apply(firstName:String
+                    ,lastName:String):Employee = new Employee (firstName
+                                                               ,None
+                                                               ,lastName)
+      }
+
+      val emp = Employee.apply("Bob", "Barker")
+      val emp2 = Employee("Tony", "Stark")
+
+      
+
     }
 }
