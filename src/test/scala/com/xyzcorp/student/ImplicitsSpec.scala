@@ -49,7 +49,23 @@ class ImplicitsSpec extends FunSpec with Matchers {
         |  you don't particularly need to inject everywhere explicitly, in this
         |  case let's discuss Future[+T]""".stripMargin) {
 
-      pending
+      import scala.concurrent._
+      import java.util.concurrent.Executors
+
+      // Java
+      val executorService = Executors.newFixedThreadPool(10)
+
+      val executionContext = ExecutionContext.fromExecutorService(executorService)
+
+      val f = Future.apply {
+        Thread.sleep(2000)
+        100 + 400
+      }(executionContext)
+
+      f.foreach(x => 
+      {
+          println(s"x: $x on Thread: ${Thread.currentThread().getName}")
+      }) (executionContext)
     }
 
     it("""Case 5: can bring up any implicit directly by merely calling up implicitly""") {

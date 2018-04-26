@@ -187,26 +187,51 @@ class PatternMatchingSpec extends FunSpec with Matchers {
 
     it("""Case 24: Let's do up a replicate method using pattern matching using recursion"""
         .stripMargin) {
-      pending
+      
 
       def replicate[A](count: Int, elem: A): List[A] = {
-        ???
+        (count, elem) match {
+          case (0,_) => List()
+          case (1,a) => List(a)
+          case (n, a) => a :: replicate(n -1, a)
+        }
       }
+
+      def replicate2[A](count: Int, elem: A): List[A] = 
+        count match {
+          case 0 => Nil
+          case _:Int => elem :: replicate2(count -1, elem)
+        }
+      
 
       replicate(0, "Whoa") should be(List())
       replicate(1, "Whoa") should be(List("Whoa"))
       replicate(2, "Whoa") should be(List("Whoa", "Whoa"))
       replicate(5, "Whoa") should
+        be(List("Whoa", "Whoa", "Whoa", "Whoa", "Whoa"))
+
+
+      replicate2(0, "Whoa") should be(List())
+      replicate2(1, "Whoa") should be(List("Whoa"))
+      replicate2(2, "Whoa") should be(List("Whoa", "Whoa"))
+      replicate2(5, "Whoa") should
         be(List("Whoa", "Whoa", "Whoa", "Whoa", "Whoa"))
     }
 
     it("""Case 25: Recreate the above but be sure that it is done
         |in a tail-recursive manner""".stripMargin) {
 
-      pending
-
+      
       def replicate[A](count: Int, elem: A): List[A] = {
-        ???
+        import scala.annotation.tailrec
+        @tailrec
+        def repl(c: Int,  acc:List[A]): List[A] = 
+          c match {
+            case 0 => acc
+            case _:Int => repl(c - 1,  elem :: acc)
+          }
+        
+        repl(count, Nil)
       }
 
       replicate(0, "Whoa") should be(List())
@@ -215,7 +240,7 @@ class PatternMatchingSpec extends FunSpec with Matchers {
       replicate(5, "Whoa") should
         be(List("Whoa", "Whoa", "Whoa", "Whoa", "Whoa"))
 
-      pending
+       
     }
 
     it("""Case 26: Implement mySecond, which will always return the
@@ -522,23 +547,33 @@ class PatternMatchingSpec extends FunSpec with Matchers {
 
     class Genre (val name: String)
     object Genre {
-      //create extractors and possibly some factories
+      def unapply(arg: Genre): Option[String] = {
+        Some(arg.name)
+      }
     }
 
     class Movie (val title: String, val year: Int, val genre: Genre)
     object Movie {
-      //create extractors and possibly some factories
+      def unapply(arg: Movie): Option[(String,Int,Genre)] = 
+      {
+        if (arg.title == "Waterworld") None
+        else Some(arg.title, arg.year, arg.genre)
+      }
     }
 
     it("""Case 49: Companion objects will generally have the unapply or unapplySeq for classes, this also means
         |  that case classes create unapply automatically, but you can create or override your own
         |  particular rules""".stripMargin) {
 
-      pending
+      
 
       val movie = new Movie("The Fifth Element", 1998, new Genre("Science Fiction"))
 
-      val result:String = ???
+      val result:String = movie match 
+      {
+        case Movie(_, _, Genre(g)) => s"The movie presented is of the $g genre"
+        case _ => "Input isn't "
+      }
 
       result should be("The movie presented is of the Science Fiction genre")
     }
