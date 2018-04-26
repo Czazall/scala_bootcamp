@@ -354,6 +354,19 @@ class FunctionsSpec extends FunSuite with Matchers {
     pending
   }
 
+
+test ("""Case 34.2 For Comprehension with my custom box""")
+{
+    val nested =  Box(40).flatMap(x=> new Box(10).map (y=> x*y))
+    nested should be (Box (400))
+
+    val nested2 = for (x <- Box(40);
+                      y <- Box(10)) yield (x*y)
+
+    nested2 should be (Box(400))
+
+}
+
   test("""Case 40: sortBy will also sort the collection based on an
       |  implicit rule, but will apply a function first, let's find a way
       |  to sort by last name and take the first two last names""".stripMargin) {
